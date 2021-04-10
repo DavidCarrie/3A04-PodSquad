@@ -1,9 +1,11 @@
+import Home from './views/Home';
+
 import './App.css';
 
 const App = () => {
   return (
     <div className="App">
-      <h1>PodSquad!</h1>
+      <Home />
     </div>
   );
 }
