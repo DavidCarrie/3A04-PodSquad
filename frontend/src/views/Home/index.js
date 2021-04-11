@@ -1,7 +1,10 @@
-import Header from '../../components/Header';
+import { 
+    Container
+} from 'react-bootstrap';
 
 export default function Home() {
     return (<>
-        <Header />
+        Welcome to the PodSquad App! Get started by clicking
+        something above.
     </>);
 }
