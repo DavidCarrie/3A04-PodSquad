@@ -13,7 +13,7 @@ import {
   RankingsView,
   RecommendationsView,
   SearchResultsView,
-  Signin
+  Login
 } from './views';
 import Header from './components/Header';
 
@@ -39,8 +39,8 @@ const App = () => {
           <Route path="/recommendations">
             <RecommendationsView />
           </Route>
-          <Route path="/signin">
-            <Signin />
+          <Route path="/login">
+            <Login />
           </Route>
           <Route path="/">
             <Home />

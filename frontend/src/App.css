@@ -116,6 +116,30 @@ img {
   margin: 0.7rem 0;
 }
 
+.card-lg {
+  border: 1px solid #eee6f8;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 5px 15px hsla(0, 0%, 0%, 0.2);
+  -moz-box-shadow: 0 5px 15px hsla(0, 0%, 0%, 0.2);
+  box-shadow: 0 5px 15px hsla(0, 0%, 0%, 0.2);
+  padding: 50px;
+  background-color: rgb(244, 242, 239);
+}
+
+.card-md {
+  border: 1px solid #eee6f8;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 5px 7.5px hsla(0, 0%, 0%, 0.2);
+  -moz-box-shadow: 0 5px 7.5px hsla(0, 0%, 0%, 0.2);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.19);
+  padding: 20px;
+  background-color: rgb(244, 242, 239);
+}
+
 /* List */
 .list {
   margin: 0.5rem 0;
@@ -217,8 +241,10 @@ img {
 
 .btn-block {
   display: block;
-  width: 100%;
+  width: 20rem;
+  /* margin-left: 17rem; */
 }
+
 
 .btn-sm {
   font-size: 0.8rem;

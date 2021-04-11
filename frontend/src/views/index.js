@@ -4,7 +4,7 @@ import ProfileView from './ProfileView';
 import RankingsView from './RankingsView';
 import RecommendationsView from './RecommendationsView';
 import SearchResultsView from './SearchResultsView';
-import Signin from './Signin';
+import Login from './Login';
 
 export {
     Home,
@@ -13,5 +13,5 @@ export {
     RankingsView,
     RecommendationsView,
     SearchResultsView,
-    Signin
+    Login
 }
