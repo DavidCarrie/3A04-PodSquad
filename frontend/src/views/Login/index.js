@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
-// import AuthContext from '../../context/auth/authContext';
+import AuthContext from '../../context/auth/authContext';
 import { Redirect } from 'react-router-dom';
 
 const Login = () => {
-    let isAuthenticated = false;
+    const authContext = useContext(AuthContext);
+
+    const { login, isAuthenticated } = authContext;
 
     const [user, setUser] = useState({
         email: '',
@@ -15,7 +17,15 @@ const Login = () => {
     const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
 
     const onSubmit = e => {
-        console.log(e, password);
+        e.preventDefault();
+        if (email === '' || password === '') {
+            console.log('Please fill in all fields');
+        } else {
+            login({
+                email,
+                password
+            });
+        }
     }
 
     if (!isAuthenticated) {
