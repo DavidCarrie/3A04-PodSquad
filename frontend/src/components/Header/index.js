@@ -1,11 +1,8 @@
 import {
   Navbar,
   Nav,
-  NavDropdown,
   Form,
   FormControl,
-  Button,
-  Link
 } from 'react-bootstrap';
 import { Search, PersonCircle } from 'react-bootstrap-icons';
 
