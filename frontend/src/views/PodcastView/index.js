@@ -1,3 +1,9 @@
-export default function PodcastView() {
-    return <p>This is the Podcast Page!</p>
+import React from 'react';
+
+const PodcastView = () => {
+    return (
+        <div></div>
+    );
 }
+
+export default PodcastView;
