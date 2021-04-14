@@ -44,7 +44,7 @@ class RankingsView extends React.Component{
             this.setState({
                 token: _token
             });
-            fetch("https://api.spotify.com/v1/me/top/tracks", {
+            fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
                 headers: {'Authorization': 'Bearer ' + _token}
             }).then(response => response.json())
                 .then(data => {
@@ -81,7 +81,7 @@ class RankingsView extends React.Component{
                         {!this.state.token && (
 
                             <div>
-                                <h1>Rankings</h1>
+                                <h1 style={{ color:'#431b93'}}>Rankings</h1>
                                 <a
                                     className="btn btn--loginApp-link"
                                     href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}
@@ -94,7 +94,7 @@ class RankingsView extends React.Component{
                             // Spotify stuff
 
                             <div>
-                                <h1>Your Top {this.state.total.toString()} Tracks!</h1>
+                                <h1 style={{ color:'#431b93'}}>Your Top {this.state.total.toString()} Tracks!</h1>
                                 <ol className="all-center" id="myOl"></ol>
 
                                 {this.showStats()}
