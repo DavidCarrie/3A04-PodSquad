@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Form, 
-  Button
+  Button,
+  Card,
+  Container
 } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import { StarFill } from 'react-bootstrap-icons';
+
+import { getReviews, postReview } from './fetchReviews';
 
 function CreateReviewSection({ onSubmit }) {
   const [ starRating, setStarRating ] = useState(0);
@@ -47,12 +51,50 @@ function CreateReviewSection({ onSubmit }) {
   </>);
 }
 
-export default function ReviewsSection() {
+function Review({ author, starRating, reviewText }) {
   return (<>
-    <h3>Reviews</h3>
-    <div style={{ width: '70%' }}>
-      <CreateReviewSection onSubmit={(starRating, reviewText) => console.log(starRating, reviewText)} />
-    </div>
+    <Card>
+      <Card.Body style={{padding: 7}}>
+        <h5>{author}</h5>
+        <StarRatingComponent
+          name={"stars-"+author}
+          starCount={5}
+          value={starRating}
+          renderStarIcon={() => <h5><StarFill /></h5>}
+          editing={false}
+        /><br/>
+        <em>{reviewText}</em>
+      </Card.Body>
+    </Card>
+  </>);
+}
+
+export default function ReviewsSection({ podcastId }) {
+  const [ reviews, setReviews ] = useState([]);
+
+  useEffect(() => {
+    getReviews().then(reviewList => {
+      setReviews([...reviewList]);
+    });
+  }, []);
+
+  const onReviewSubmit = (starRating, reviewText) => {
+    postReview({starRating: starRating, reviewText: reviewText})
+      .then(review => setReviews(prev => [review, ...prev]));
+  }
+
+  return (<>
+    <Container style={{ width: '70%', marginLeft: 0 }}>
+      <h3>Reviews</h3>
+      <CreateReviewSection onSubmit={onReviewSubmit} />
+      <br />
+      <div>
+        {reviews.map((review, id) => (
+          <Review key={'review-'+id} author={review.author} 
+            starRating={review.starRating} reviewText={review.reviewText} />
+        ))}
+      </div>
+    </Container>
   </>
   );
 }

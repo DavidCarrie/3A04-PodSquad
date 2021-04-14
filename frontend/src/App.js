@@ -4,11 +4,9 @@ import {
   Route
 } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-
 import './App.css';
 
 import AuthState from './context/auth/AuthState';
-
 import {
   Home,
   PodcastView,
@@ -20,41 +18,28 @@ import {
 } from './views';
 import Header from './components/Header';
 import PodcastState from './context/podcast/PodcastState';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   return (
     <>
-    <Header />
     <AuthState>
-      <PodcastState>
-        <Router>
-          <Container fluid>
-            <Switch>
-              <Route path="/search">
-                <SearchResultsView />
-              </Route>
-              <Route path="/podcast">
-                <PodcastView />
-              </Route>
-              <Route path="/profile">
-                <ProfileView />
-              </Route>
-              <Route path="/rankings">
-                <RankingsView />
-              </Route>
-              <Route path="/recommendations">
-                <RecommendationsView />
-              </Route>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </Container>
-        </Router>
-      </PodcastState>
+      <Router>
+        <Header />
+        <Container fluid>
+          <Switch>
+            <PrivateRoute path="/search" component={SearchResultsView}/>
+            <PrivateRoute path="/podcast" component={PodcastView}/>
+            <PrivateRoute path="/profile" component={ProfileView}/>
+            <PrivateRoute path="/rankings" component={RankingsView}/>
+            <PrivateRoute path="/recommendations" component={RecommendationsView}/>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute path="/" component={Home}/>
+          </Switch>
+        </Container>
+      </Router>
     </AuthState>
     </>
   );

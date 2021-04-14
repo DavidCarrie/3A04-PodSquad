@@ -8,7 +8,7 @@ const clientId = "17d5bf25cae142aaa9512ecff18c1bca";
 const redirectUri = "http://localhost:3000/rankings";
 const scopes = [
     "user-read-currently-playing",
-    "user-read-playback-state",
+    "user-top-read"
 ];
 // Get the hash of the url
 const hash = window.location.hash
@@ -29,36 +29,11 @@ class RankingsView extends React.Component{
         super();
         this.state = {
             token: null,
-            item: {
-                album: {
-                    images: [{ url: "" }]
-                },
-                name: "",
-                artists: [{ name: "" }],
-                duration_ms:0,
-            },
-            is_playing: "Paused",
-            progress_ms: 0
+            total: 0,
+            names: []
         };
 
-        this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
-    }
-    getCurrentlyPlaying(token) {
-        // Make a call using the token
-        ajax({
-            url: "https://api.spotify.com/v1/me/player",
-            type: "GET",
-            beforeSend: (xhr) => {
-                xhr.setRequestHeader("Authorization", "Bearer " + token);
-            },
-            success: (data) => {
-                this.setState({
-                    item: data.item,
-                    is_playing: data.is_playing,
-                    progress_ms: data.progress_ms,
-                });
-            }
-        });
+        //this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
     }
 
     componentDidMount() {
@@ -69,27 +44,63 @@ class RankingsView extends React.Component{
             this.setState({
                 token: _token
             });
+            fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
+                headers: {'Authorization': 'Bearer ' + _token}
+            }).then(response => response.json())
+                .then(data => {
+                    let tmpArray = []
+                    for (var i = 0; i < data.items.length; i++) {
+                        tmpArray.push(data.items[i].name)
+                    }
+                    this.setState({
+                        total: data.items.length,
+                        names: tmpArray
+                })})
         }
+    }
+
+    showStats() {
+
+        var i = this.state.names.length
+        this.state.names.forEach(function(item) {
+            if (document.getElementById("myOl").childElementCount < i) {
+                var li = document.createElement("li");
+                var text = document.createTextNode(item);
+                li.appendChild(text);
+                document.getElementById("myOl").appendChild(li);
+            }
+        })
     }
 
     render() {
         return (
-            <div className='card w-75' style={{ left: '12.5%'}}>
-                <p>This is the Rankings view!</p>
+            <div className='card w-50' style={{ left: '25%'}}>
                 <header className="App-header">
-                    {!this.state.token && (
-                        <a
-                            className="btn btn--loginApp-link"
-                            href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}
-                        >
-                            Login to Spotify
-                        </a>
-                    )}
-                    {this.state.token && (
-                        // Spotify stuff
-                        <a>Logged in!</a>
-                    )}
 
+                    <div style={{textAlign: 'center'}}>
+                        {!this.state.token && (
+
+                            <div>
+                                <h1 style={{ color:'#431b93'}}>Rankings</h1>
+                                <a
+                                    className="btn btn--loginApp-link"
+                                    href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}
+                                >
+                                    Login to Spotify
+                                </a>
+                            </div>
+                        )}
+                        {this.state.token && (
+                            // Spotify stuff
+
+                            <div>
+                                <h1 style={{ color:'#431b93'}}>Your Top {this.state.total.toString()} Played!</h1>
+                                <ol className="all-center" id="myOl"></ol>
+
+                                {this.showStats()}
+                            </div>
+                        )}
+                    </div>
                 </header>
             </div>
         )
