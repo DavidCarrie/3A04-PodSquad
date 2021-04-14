@@ -38,7 +38,7 @@ class RankingsView extends React.Component{
 
     componentDidMount() {
         // Set token
-        let _token = "BQAJ6wrabZI1km49CwelelhZGPK7_LezrtsUvtk6fPwh6Nzni9ORANFawYqIe1WIX1qwMAKt0-OUTqp5I-nQ2mVs3YTBFYsezVbb69IiqBbuXdhdb5hiu_te4-cpvE7TTfsfvNQwiKGO4gM1DYJNz1vhBA";
+        let _token = "BQARZID1EndG3XeniPORMzbyBpFEMy0m3NDcW6_EDTcsLOkTLU-1qufLWHtM4mTptYK949mOhe25inJ-dw0gY3AEN7Xb6urMEJCQd3w3dERIZNHXyNhlvFgyoLTfSQGoAFpL5YYfvQtCokHFwzUrs9ts9A";
         if (_token) {
             // Set token
             this.setState({
