@@ -94,7 +94,7 @@ class RankingsView extends React.Component{
                             // Spotify stuff
 
                             <div>
-                                <h1 style={{ color:'#431b93'}}>Your Top {this.state.total.toString()} Tracks!</h1>
+                                <h1 style={{ color:'#431b93'}}>Your Top {this.state.total.toString()} Played!</h1>
                                 <ol className="all-center" id="myOl"></ol>
 
                                 {this.showStats()}
