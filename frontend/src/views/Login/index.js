@@ -6,6 +6,7 @@ const Login = () => {
     const authContext = useContext(AuthContext);
 
     const { login, isAuthenticated } = authContext;
+    console.log(isAuthenticated);
 
     const [user, setUser] = useState({
         email: '',
@@ -14,7 +15,7 @@ const Login = () => {
 
     const { email, password } = user;
 
-    const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
+    const onChange = e => setUser(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
     const onSubmit = e => {
         e.preventDefault();
@@ -30,55 +31,56 @@ const Login = () => {
 
     if (!isAuthenticated) {
         return (
-          <div className='card w-50' style={{ left: '25%' }}>
-            <h2>Welcome back to</h2>
-            <h1 className='mac-header'>PodSquad</h1>
-            <form onSubmit={onSubmit}>
-              <div>
-                <label
-                  htmlFor='email'
-                  className='login-label'
-                >
-                  Email:
+            <div className='card w-50' style={{ left: '25%' }}>
+              <h2>Welcome back to</h2>
+              <h1 className='mac-header'>PodSquad</h1>
+              <form onSubmit={onSubmit}>
+                <div>
+                  <label
+                    htmlFor='email'
+                    className='login-label'
+                  >
+                    Email:
                 </label>
-                <input
-                  type='email'
-                  name='email'
-                  value={email}
-                  onChange={onChange}
-                  required
-                  style={{ width: '40rem' }}
-                />
-              </div>
-              <div style={{ paddingBottom: '1rem' }}>
-                <label
-                  htmlFor='password'
-                  className='login-label'
-                >
-                  Password:{' '}
-                </label>
-                <input
-                  type='password'
-                  name='password'
-                  value={password}
-                  onChange={onChange}
-                  required
-                  style={{ width: '40rem' }}
-                />
-              </div>
-              <div>
-                {/* eslint-disable-next-line */}
-                <a href='#'>
                   <input
-                    type='submit'
-                    value='Login'
-                    className='btn btn-primary btn-block'
-                    style={{ width: '30rem' }}
+                    type='email'
+                    name='email'
+                    value={email}
+                    onChange={onChange}
+                    required
+                    style={{ width: '40rem' }}
                   />
-                </a>
-              </div>
-            </form>
-          </div>
+                </div>
+                <div style={{ paddingBottom: '1rem' }}>
+                  <label
+                    htmlFor='password'
+                    className='login-label'
+                  >
+                    Password:{' '}
+                  </label>
+                  <input
+                    type='password'
+                    name='password'
+                    value={password}
+                    onChange={onChange}
+                    required
+                    style={{ width: '40rem' }}
+                  />
+                </div>
+                <div>
+                  {/* eslint-disable-next-line */}
+                  <a href='#'>
+                    <input
+                      type='submit'
+                      value='Login'
+                      className='btn btn-primary btn-block'
+                      style={{ width: '30rem' }}
+                      onSubmit={onSubmit}
+                    />
+                  </a>
+                </div>
+              </form>
+            </div>
         );
       } else {
         return <Redirect to='/' />;
