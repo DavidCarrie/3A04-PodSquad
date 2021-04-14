@@ -38,7 +38,7 @@ class RankingsView extends React.Component{
 
     componentDidMount() {
         // Set token
-        let _token = hash.access_token;
+        let _token = "BQAJ6wrabZI1km49CwelelhZGPK7_LezrtsUvtk6fPwh6Nzni9ORANFawYqIe1WIX1qwMAKt0-OUTqp5I-nQ2mVs3YTBFYsezVbb69IiqBbuXdhdb5hiu_te4-cpvE7TTfsfvNQwiKGO4gM1DYJNz1vhBA";
         if (_token) {
             // Set token
             this.setState({
@@ -78,28 +78,24 @@ class RankingsView extends React.Component{
                 <header className="App-header">
 
                     <div style={{textAlign: 'center'}}>
-                        {!this.state.token && (
 
                             <div>
                                 <h1 style={{ color:'#431b93'}}>Rankings</h1>
                                 <a
-                                    className="btn btn--loginApp-link"
+                                    className="btn btn--loginApp-link btn-secondary"
                                     href={`${authEndpoint}client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}
                                 >
                                     Login to Spotify
                                 </a>
                             </div>
-                        )}
-                        {this.state.token && (
-                            // Spotify stuff
+
 
                             <div>
-                                <h1 style={{ color:'#431b93'}}>Your Top {this.state.total.toString()} Played!</h1>
+                                <h2 style={{ color:'#431b93'}}>Your Top {this.state.total.toString()} Played!</h2>
                                 <ol className="all-center" id="myOl"></ol>
 
                                 {this.showStats()}
                             </div>
-                        )}
                     </div>
                 </header>
             </div>
