@@ -26,28 +26,6 @@ const AuthState = props => {
 
 	const [state, dispatch] = useReducer(authReducer, ls.get(LS_KEY) || initialState);
 
-	// Load User
-	const loadUser = async () => {
-		if (localStorage.token) {
-			setAuthToken(localStorage.token);
-		}
-
-		try {
-			// const res = await axios.get('/api/auth');
-			const userInfo = {
-				// FAKE DATA
-				userId: 32,
-				username: 'podcastLover101',
-				firstName: 'Jon',
-				lastName: 'Snow'
-			};
-			dispatch({ type: USER_LOADED, payload: userInfo });
-			ls.set(LS_KEY, { ...userInfo, isAuthenticated: true });
-		} catch (error) {
-			dispatch({ type: AUTH_ERROR });
-		}
-	};
-
 	// Log user in
 	const login = async formData => {
 		const config = {
@@ -58,28 +36,34 @@ const AuthState = props => {
 
 		try {
 			// const res = await axios.post('/api/auth', formData, config);
-			// do we need to dispatch this, if we're calling the loadUser function which 
-			// will also dispatch a thing to update what user we have? 
-
-			// dispatch({
-			//     type: LOGIN_USER,
-			//     payload: {
-			// 			// FAKE DATA HERE
-			// 			result: 0, // 0 = success, 1 = failed
-			// 			user: {
-			// 				userId: 32,
-			// 				username: 'podcastLover101',
-							
-			// 			}
-			// 		}
-			// });
 			// console.log(res.data);
-			loadUser();
+
+			dispatch({
+				type: LOGIN_USER,
+				payload: {
+						// FAKE DATA
+						userId: 32,
+						username: formData.username || 'podcastLover101',
+						firstName: formData.firstName || 'Jon',
+						lastName: formData.lastName || 'Snow',
+						email: formData.email
+				}});
+
+			if (localStorage.token) {
+				setAuthToken(localStorage.token);
+			}
+
+			ls.set(LS_KEY, { ...formData, userId: 32, isAuthenticated: true });
 		} catch (error) {
 			dispatch({ type: LOGIN_FAILED, payload: { reason: 'Invalid user or password.' } });
 			console.log("Request failed");
 		}
 	};
+
+	const signup = async formData => {
+		// send backend request to create a new account
+		login(formData);
+	}
 
 	const logout = async () => {
 		dispatch({ type: LOGOUT });
@@ -94,9 +78,9 @@ const AuthState = props => {
 				username: state.username,
 				current: state.current,
 				loading: state.loading,
-				loadUser,
 				login,
-				logout
+				logout,
+				signup
 			}}
 		>
 			{props.children}

@@ -1,13 +1,13 @@
 import {
+	LOGIN_USER,
 	LOGIN_FAILED,
-	USER_LOADED,
 	AUTH_ERROR,
 	LOGOUT
 } from '../types';
 
 export default (state, action) => {
 	switch (action.type) {
-		case USER_LOADED:
+		case LOGIN_USER:
 			return {
 				...state, 
 				isAuthenticated: true,
@@ -16,7 +16,6 @@ export default (state, action) => {
 			}
 		break;
 		case LOGOUT:
-			console.log('logging out...');
 			return {
 				...state, 
 				isAuthenticated: false,
