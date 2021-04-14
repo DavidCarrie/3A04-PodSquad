@@ -10,20 +10,14 @@ const PodcastView = () => {
 		<Container fluid>
 			<Row>
 				<Col xs={8}>
-					<Row>
-						<Col>
-							Spotify web player here						
-						</Col>
-					</Row>
-					<Row>
-						<Col>
-							Snippet controller here
-						</Col>
-					</Row>
+					Spotify web player here						
 				</Col>
-				<Col xs={4}>
-					<ReviewsSection />
+				<Col>
+					Snippet controller here
 				</Col>
+			</Row>
+			<Row>
+				<Col><ReviewsSection /></Col>
 			</Row>
 		</Container>
 
