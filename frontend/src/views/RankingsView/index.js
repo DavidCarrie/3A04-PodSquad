@@ -59,6 +59,19 @@ class RankingsView extends React.Component{
         }
     }
 
+    showStats() {
+
+        var i = this.state.names.length
+        this.state.names.forEach(function(item) {
+            if (document.getElementById("myOl").childElementCount < i) {
+                var li = document.createElement("li");
+                var text = document.createTextNode(item);
+                li.appendChild(text);
+                document.getElementById("myOl").appendChild(li);
+            }
+        })
+    }
+
     render() {
         return (
             <div className='card w-50' style={{ left: '25%'}}>
@@ -84,16 +97,7 @@ class RankingsView extends React.Component{
                                 <h1>Your Top {this.state.total.toString()} Tracks!</h1>
                                 <ol className="all-center" id="myOl"></ol>
 
-                                <script>
-                                    {
-                                        this.state.names.forEach(function(item) {
-                                            var li = document.createElement("li");
-                                            var text = document.createTextNode(item);
-                                            li.appendChild(text);
-                                            document.getElementById("myOl").appendChild(li);
-                                        })
-                                    }
-                                </script>
+                                {this.showStats()}
                             </div>
                         )}
                     </div>
