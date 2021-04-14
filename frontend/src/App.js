@@ -19,39 +19,42 @@ import {
   Login
 } from './views';
 import Header from './components/Header';
+import PodcastState from './context/podcast/PodcastState';
 
 const App = () => {
   return (
     <>
     <Header />
     <AuthState>
-      <Router>
-        <Container fluid>
-          <Switch>
-            <Route path="/search">
-              <SearchResultsView />
-            </Route>
-            <Route path="/podcast">
-              <PodcastView />
-            </Route>
-            <Route path="/profile">
-              <ProfileView />
-            </Route>
-            <Route path="/rankings">
-              <RankingsView />
-            </Route>
-            <Route path="/recommendations">
-              <RecommendationsView />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </Container>
-      </Router>
+      <PodcastState>
+        <Router>
+          <Container fluid>
+            <Switch>
+              <Route path="/search">
+                <SearchResultsView />
+              </Route>
+              <Route path="/podcast">
+                <PodcastView />
+              </Route>
+              <Route path="/profile">
+                <ProfileView />
+              </Route>
+              <Route path="/rankings">
+                <RankingsView />
+              </Route>
+              <Route path="/recommendations">
+                <RecommendationsView />
+              </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </Container>
+        </Router>
+      </PodcastState>
     </AuthState>
     </>
   );
