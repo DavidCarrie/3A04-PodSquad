@@ -32,9 +32,13 @@ const hash = window.location.hash
     }, {});
 window.location.hash = "";
 
+const mapPodcastId_to_SpotifyEpId = pid => {
+    if (pid === '23928371') return '2mk8EwUS472zDOgIDnJV35';
+    else return '';
+}
+
 const PodcastView = () => {
     const podcastContext = useContext(PodcastContext);
-
     const { play } = podcastContext;
 
     const [metadata, setMetadata] = useState({
@@ -42,6 +46,9 @@ const PodcastView = () => {
         is_playing: false,
         progress_ms: 0
     });
+
+    let t = window.location.href.split('id=');
+    const episodeId = mapPodcastId_to_SpotifyEpId(t[t.length - 1]);
 
     const { item, is_playing, progress_ms } = metadata;
 
@@ -144,15 +151,17 @@ const PodcastView = () => {
                             progress_ms={progress_ms}
                         />
                     )}
-                    <iframe src="https://open.spotify.com/embed-podcast/episode/2mk8EwUS472zDOgIDnJV35" width="100%" height="232" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    <iframe src={"https://open.spotify.com/embed-podcast/episode/"+episodeId} width="100%" height="232" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                 </Col>
-				<Col>
-					Snippet controller here
-				</Col>
+                {episodeId !== '' ? <Col>
+                    Snippet controller here
+				</Col> : <></>}
+				
 			</Row>
-			<Row>
-				<Col><ReviewsSection /></Col>
-			</Row>
+            {episodeId !== '' ? <Row>
+                <Col><ReviewsSection /></Col>
+            </Row> : <></>}
+			
 		</Container>
 
 	);

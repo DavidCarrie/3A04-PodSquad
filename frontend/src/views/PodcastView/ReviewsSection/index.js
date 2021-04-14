@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
   Form, 
   Button,
@@ -9,6 +9,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import { StarFill } from 'react-bootstrap-icons';
 
 import { getReviews, postReview } from './fetchReviews';
+import AuthContext from '../../../context/auth/authContext';
 
 function CreateReviewSection({ onSubmit }) {
   const [ starRating, setStarRating ] = useState(0);
@@ -71,6 +72,7 @@ function Review({ author, starRating, reviewText }) {
 
 export default function ReviewsSection({ podcastId }) {
   const [ reviews, setReviews ] = useState([]);
+  const { user } = useContext(AuthContext);;
 
   useEffect(() => {
     getReviews().then(reviewList => {
@@ -80,7 +82,10 @@ export default function ReviewsSection({ podcastId }) {
 
   const onReviewSubmit = (starRating, reviewText) => {
     postReview({starRating: starRating, reviewText: reviewText})
-      .then(review => setReviews(prev => [review, ...prev]));
+      .then(review => {
+        let n = {...review, author: user.username};
+        setReviews(prev => [n, ...prev])
+      });
   }
 
   return (<>

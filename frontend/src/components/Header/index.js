@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import {
   Navbar,
   Nav,
@@ -13,6 +13,7 @@ import AuthContext from '../../context/auth/authContext';
 export default function Header() {
 
   const { logout, isAuthenticated } = useContext(AuthContext);
+  const [ query, setQuery ] = useState('');
 
   return (<>
     <Navbar bg="primary" variant="dark">
@@ -20,8 +21,10 @@ export default function Header() {
       {isAuthenticated ? <>
         <Form inline style={{ width: '100%' }}>
           <FormControl type="text" placeholder="Search"
-            style={{ width: '20em', height: '1.9em' }} className="mr-lg-2" />
-            <a href="/search" className="btn btn-primary"><Search /></a>
+            style={{ width: '20em', height: '1.9em' }} className="mr-lg-2"
+            onChange={e => setQuery(e.target.value)}
+            />
+            <Link to={"/search?q=" + query} className="btn btn-primary"><Search /></Link>
         </Form>
         <Nav className="justify-content-end" style={{ width: '100%' }}>
           <Nav.Link as={Link} to="/recommendations">Recommendations</Nav.Link>
