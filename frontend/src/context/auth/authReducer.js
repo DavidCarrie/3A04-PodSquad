@@ -1,7 +1,8 @@
 import {
 	LOGIN_FAILED,
 	USER_LOADED,
-	AUTH_ERROR
+	AUTH_ERROR,
+	LOGOUT
 } from '../types';
 
 export default (state, action) => {
@@ -12,6 +13,16 @@ export default (state, action) => {
 				isAuthenticated: true,
 				user: action.payload,
 				username: action.payload.username,
+			}
+		break;
+		case LOGOUT:
+			console.log('logging out...');
+			return {
+				...state, 
+				isAuthenticated: false,
+				user: null,
+				username: null,
+				current: null
 			}
 		break;
 		case AUTH_ERROR:

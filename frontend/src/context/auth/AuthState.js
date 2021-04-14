@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
+import ls from 'local-storage';
 
 import authReducer from './authReducer';
 import setAuthToken from '../../utils/setAuthToken';
@@ -8,8 +9,11 @@ import {
 	LOGIN_USER,
 	LOGIN_FAILED,
 	USER_LOADED,
-	AUTH_ERROR
+	AUTH_ERROR,
+	LOGOUT
 } from '../types';
+
+const LS_KEY = 'podsquad-userinfo';
 
 const AuthState = props => {
 	const initialState = {
@@ -20,7 +24,7 @@ const AuthState = props => {
 		loading: true
 	};
 
-	const [state, dispatch] = useReducer(authReducer, initialState);
+	const [state, dispatch] = useReducer(authReducer, ls.get(LS_KEY) || initialState);
 
 	// Load User
 	const loadUser = async () => {
@@ -30,15 +34,15 @@ const AuthState = props => {
 
 		try {
 			// const res = await axios.get('/api/auth');
-			dispatch({
-				type: USER_LOADED, payload: {
-					// FAKE DATA
-					userId: 32,
-					username: 'podcastLover101',
-					firstName: 'Jon',
-					lastName: 'Snow'
-				}
-			});
+			const userInfo = {
+				// FAKE DATA
+				userId: 32,
+				username: 'podcastLover101',
+				firstName: 'Jon',
+				lastName: 'Snow'
+			};
+			dispatch({ type: USER_LOADED, payload: userInfo });
+			ls.set(LS_KEY, { ...userInfo, isAuthenticated: true });
 		} catch (error) {
 			dispatch({ type: AUTH_ERROR });
 		}
@@ -77,6 +81,11 @@ const AuthState = props => {
 		}
 	};
 
+	const logout = async () => {
+		dispatch({ type: LOGOUT });
+		ls.set(LS_KEY, {...initialState, isAuthenticated: false });
+	}
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -86,7 +95,8 @@ const AuthState = props => {
 				current: state.current,
 				loading: state.loading,
 				loadUser,
-				login
+				login,
+				logout
 			}}
 		>
 			{props.children}
