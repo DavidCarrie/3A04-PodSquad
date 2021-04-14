@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import ls from 'local-storage';
 
 import authReducer from './authReducer';
@@ -8,20 +8,25 @@ import AuthContext from './authContext';
 import {
 	LOGIN_USER,
 	LOGIN_FAILED,
-	USER_LOADED,
-	AUTH_ERROR,
-	LOGOUT
+	LOGOUT,
+	UPDATE_USER
 } from '../types';
 
 const LS_KEY = 'podsquad-userinfo';
 
 const AuthState = props => {
+	const nullUser = {
+		userId: null,
+		username: null,
+		firstName: null,
+		lastName: null,
+		email: null,
+		bio: null,
+	}
+	
 	const initialState = {
 		isAuthenticated: false,
-		user: null,
-		username: null,
-		current: null,
-		loading: true
+		user: {...nullUser} 
 	};
 
 	const [state, dispatch] = useReducer(authReducer, ls.get(LS_KEY) || initialState);
@@ -34,26 +39,28 @@ const AuthState = props => {
 			}
 		};
 
+		const user = {...nullUser, 
+			userId: 32,
+			username: formData.username || 'podcastLover101',
+			firstName: formData.firstName || 'Jon',
+			lastName: formData.lastName || 'Snow',
+			email: formData.email
+		};
+
 		try {
 			// const res = await axios.post('/api/auth', formData, config);
 			// console.log(res.data);
 
 			dispatch({
 				type: LOGIN_USER,
-				payload: {
-						// FAKE DATA
-						userId: 32,
-						username: formData.username || 'podcastLover101',
-						firstName: formData.firstName || 'Jon',
-						lastName: formData.lastName || 'Snow',
-						email: formData.email
-				}});
+				payload: user
+			});
 
 			if (localStorage.token) {
 				setAuthToken(localStorage.token);
 			}
 
-			ls.set(LS_KEY, { ...formData, userId: 32, isAuthenticated: true });
+			ls.set(LS_KEY, { user: user, isAuthenticated: true });
 		} catch (error) {
 			dispatch({ type: LOGIN_FAILED, payload: { reason: 'Invalid user or password.' } });
 			console.log("Request failed");
@@ -67,7 +74,12 @@ const AuthState = props => {
 
 	const logout = async () => {
 		dispatch({ type: LOGOUT });
-		ls.set(LS_KEY, {...initialState, isAuthenticated: false });
+		ls.set(LS_KEY, initialState);
+	}
+
+	const updateUser = async profile => {
+		dispatch({ type: UPDATE_USER, payload: profile});
+		ls.set(LS_KEY, { ...state, user: { ...state.user, ...profile } });
 	}
 
 	return (
@@ -75,12 +87,10 @@ const AuthState = props => {
 			value={{
 				isAuthenticated: state.isAuthenticated,
 				user: state.user,
-				username: state.username,
-				current: state.current,
-				loading: state.loading,
 				login,
 				logout,
-				signup
+				signup,
+				updateUser
 			}}
 		>
 			{props.children}

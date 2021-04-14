@@ -33,17 +33,12 @@ const Login = () => {
     const onChange = e => setUser(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
     const onSubmit = e => {
-        e.preventDefault();
-        if (email === '' || password === '') {
-            console.log('Please fill in all fields');
-        } else {
-            if (activeForm === LOGIN) {
-              login({ email, password });
-            } else {
-              signup({...user});
-            }
-            
-        }
+      e.preventDefault();
+      if (activeForm === LOGIN) {
+        login({ email, password });
+      } else {
+        signup({...user});
+      }
     }
 
     const subtitle = activeForm === LOGIN ? "Login to existing account" : "Create new account";
@@ -150,64 +145,13 @@ const Login = () => {
               </Nav>
             </Card.Header>
             <Card.Body>
-              <Card.Title>Welcome to PodSquad</Card.Title>
-              <Card.Subtitle>{subtitle}</Card.Subtitle>
+              <Card.Title as="h2" className="text-primary">Welcome to PodSquad</Card.Title>
+              <Card.Subtitle as="h5" className="text-info">{subtitle}</Card.Subtitle>
               <br />
               {activeForm === LOGIN ? loginForm : signupForm}
             </Card.Body>
           </Card>
-
-
-            {/* <div className='card w-50' style={{ left: '25%' }}>
-              <h2>Welcome to PodSquad</h2>
-              <form onSubmit={onSubmit}>
-                <div>
-                  <label
-                    htmlFor='email'
-                    className='login-label'
-                  >
-                    Email:
-                </label>
-                  <input
-                    type='email'
-                    name='email'
-                    value={email}
-                    onChange={onChange}
-                    required
-                    style={{ width: '40rem' }}
-                  />
-                </div>
-                <div style={{ paddingBottom: '1rem' }}>
-                  <label
-                    htmlFor='password'
-                    className='login-label'
-                  >
-                    Password:{' '}
-                  </label>
-                  <input
-                    type='password'
-                    name='password'
-                    value={password}
-                    onChange={onChange}
-                    required
-                    style={{ width: '40rem' }}
-                  />
-                </div>
-                <div>
-                  
-                  <a href='#'>
-                    <input
-                      type='submit'
-                      value='Login'
-                      className='btn btn-primary btn-block'
-                      style={{ width: '30rem' }}
-                      onSubmit={onSubmit}
-                    />
-                  </a>
-                </div>
-              </form>
-            </div> */}
-            </>
+          </>
         );
       } else {
         return <Redirect to='/' />;

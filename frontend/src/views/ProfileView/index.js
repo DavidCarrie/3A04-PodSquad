@@ -1,103 +1,116 @@
-import React, { useState, useContext } from 'react';
-import { ajax } from "rxjs/ajax";
+import React, { useState, useContext, useReducer } from 'react';
+import {
+	Card,
+	Form,
+	Col,
+	Button
+} from 'react-bootstrap';
 
 import AuthContext from '../../context/auth/authContext';
 
 export default function ProfileView() {
-	const authContext = useContext(AuthContext);
-	const { login, isAuthenticated } = authContext;
-	console.log(isAuthenticated);
-	
-	return (<p></p>);
+	const { user, updateUser } = useContext(AuthContext);
+	const [ profile, setProfile ] = useState({
+		firstName: user.firstName,
+		lastName: user.lastName,
+		username: user.username, 
+		email: user.email, 
+		bio: user.bio,
+	});
+	const [ editable, setEditable ] = useState(false);
+
+	const Profile = <>
+		<Card.Title as="h2" className="text-primary">{profile.firstName} {profile.lastName}</Card.Title>
+		<Card.Subtitle className="text-info">@{profile.username}</Card.Subtitle>
+		<br />
+		<p><strong>Email: </strong> {profile.email}</p>
+		<div><p><strong>Bio: </strong><em>{profile.bio}</em></p></div>
+	</>;
+
+	const ProfileForm = <Form onSubmit={onSubmit}>
+		<Form.Row>
+			<Form.Group as={Col} xs={6}>
+				<Form.Label>First Name</Form.Label>
+				<Form.Control 
+					type="text" 
+					value={profile.firstName} 
+					name="firstName" 
+					onChange={onChange}
+					required
+				></Form.Control>
+			</Form.Group>
+			<Form.Group as={Col} xs={6}>
+				<Form.Label>Last Name</Form.Label>
+				<Form.Control
+					type="text"
+					value={profile.lastName}
+					name="lastName"
+					onChange={onChange}
+					required
+				></Form.Control>
+			</Form.Group>
+		</Form.Row>
+		<Form.Group>
+			<Form.Label>Username</Form.Label>
+			<Form.Control
+				type="text"
+				value={profile.username}
+				name="username"
+				onChange={onChange}
+				required
+			></Form.Control>
+		</Form.Group>
+		<Form.Group>
+			<Form.Label>Email</Form.Label>
+			<Form.Control
+				type="email"
+				value={profile.email}
+				name="email"
+				onChange={onChange}
+				required
+			></Form.Control>
+		</Form.Group>
+		<Form.Group>
+			<Form.Label>Bio</Form.Label>
+			<Form.Control
+				as="textarea"
+				rows={10}
+				value={profile.bio}
+				name="bio"
+				onChange={onChange}
+			></Form.Control>
+		</Form.Group>
+		<Button 
+			variant="primary"
+			type="submit"
+		>
+			Save changes
+		</Button>
+	</Form>
+
+	function onChange(e) {
+		setProfile(prev => ({...prev, [e.target.name]: e.target.value}));
+	}
+
+	function onSubmit(e) {
+		e.preventDefault();
+		setEditable(false);
+		updateUser(profile);
+	}
+
+	return (<>
+		<Card style={{ width: '50%', left: '25%', padding: 0 }}>
+			<Card.Header>User Profile
+				{editable ? <></> : 
+					<Button style={{ position: 'absolute', right: 10, top: 9 }} variant="outline-info" size="sm"
+						onClick={() => setEditable(true)}
+					>Edit profile</Button>
+				}
+			</Card.Header>
+			<Card.Body>
+				{editable ? ProfileForm : Profile}
+			</Card.Body>
+		</Card>;
+	</>
+	)
 }
-
-
-// class ProfileView extends React.Component {
-// 	constructor(props) {
-// 		super(props);
-
-
-// 		this.state = {
-// 			first: "First Name",
-// 			last: "Last Name",
-// 			username: "TestUser",
-// 			picture: false,
-// 			src: false,
-// 			email: "TestEmail@test.com",
-// 			bio: "Lorem ipsum dolor sit amet, vel quas tollit ei, eam vitae ocurreret an. Ne habeo labores repudiandae nam. Usu malis mediocritatem ut, purto facilisis eos et. Vis docendi assentior voluptatum in. Eum modus deseruisse no, eos prima quaeque abhorreant id.\n" +
-// 				"\n" +
-// 				"In quo prima utamur platonem. Choro principes signiferumque mel ad, copiosae consetetur eu eos. Vel posse ubique sanctus cu, sea no vivendo torquatos. Mundi simul adversarium no eum, suas denique oporteat eu eum, ea reque imperdiet molestiae has. Omnesque reprimique theophrastus quo eu. Falli pertinax principes ea eum."
-// 		}
-// 	}
-
-// 	handlePictureSelected(event) {
-// 		var picture = event.target.files[0];
-// 		var src = URL.createObjectURL(picture);
-
-// 		this.setState({
-// 			picture: picture,
-// 			src: src
-// 		});
-
-// 		this.upload.bind(this)
-// 	}
-
-// 	renderPreview() {
-// 		return (
-// 			<div style={{ width: 200, height: 200, border: "solid", color: '#aa80ff' }}>
-// 				<img src={this.state.src} style={{ width: '100%', height: "100%", objectFit: 'fill' }} />
-// 			</div>
-// 		);
-// 	}
-
-// 	upload() {
-// 		var formData = new FormData();
-
-// 		formData.append("file", this.state.picture);
-
-// 		ajax({
-// 			url: "/some/api/endpoint",
-// 			method: "POST",
-// 			data: formData,
-// 			cache: false,
-// 			contentType: false,
-// 			processData: false,
-// 			success: function (response) {
-// 				// Code to handle a succesful upload
-// 			}
-// 		});
-
-// 	}
-
-// 	// if (isAuthenticated) {
-// 	render() {
-// 		return (
-// 			<div className='card w-75' style={{ left: '12.5%' }}>
-// 				<div className='container'>
-// 					<h1 style={{ color: '#431b93' }}>User Profile</h1>
-// 					<hr style={{ width: 200 }} />
-// 					<div style={{ width: '20%', float: 'left' }}>
-// 						<div>
-// 							{this.renderPreview()}
-// 						</div>
-// 						<input
-// 							type='file'
-// 							onChange={this.handlePictureSelected.bind(this)}
-// 							id='input-pic'
-// 						/>
-// 						<br />
-// 						<button onClick={this.upload.bind(this)}>Save Profile</button>
-// 					</div>
-
-// 					<div style={{ width: '80%', float: 'right' }}>
-// 						<h1 style={{ color: '#9966ff' }}>{this.state.first} {this.state.last}</h1>
-// 						<h4 style={{ color: '#aa80ff' }}>@{this.state.username}</h4>
-// 						<h4 style={{ color: '#ccb3ff' }}>{this.state.email}</h4>
-// 						<h6>{this.state.bio}</h6>
-// 					</div>
-// 				</div>
-// 			</div>
-// 		);
-// 	}
-
-// }

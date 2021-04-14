@@ -2,7 +2,8 @@ import {
 	LOGIN_USER,
 	LOGIN_FAILED,
 	AUTH_ERROR,
-	LOGOUT
+	LOGOUT,
+	UPDATE_USER
 } from '../types';
 
 export default (state, action) => {
@@ -12,18 +13,21 @@ export default (state, action) => {
 				...state, 
 				isAuthenticated: true,
 				user: action.payload,
-				username: action.payload.username,
 			}
-		break;
 		case LOGOUT:
 			return {
 				...state, 
 				isAuthenticated: false,
 				user: null,
-				username: null,
-				current: null
 			}
-		break;
+		case UPDATE_USER:
+			return {
+				...state, 
+				user: {
+					...state.user, 
+					...action.payload
+				}
+			}
 		case AUTH_ERROR:
 		case LOGIN_FAILED: 
 		default:
