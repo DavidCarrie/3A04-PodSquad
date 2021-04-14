@@ -17,28 +17,31 @@ import {
   Login
 } from './views';
 import Header from './components/Header';
+import PodcastState from './context/podcast/PodcastState';
 import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   return (
     <>
     <AuthState>
-      <Router>
-        <Header />
-        <Container fluid>
-          <Switch>
-            <PrivateRoute path="/search" component={SearchResultsView}/>
-            <PrivateRoute path="/podcast" component={PodcastView}/>
-            <PrivateRoute path="/profile" component={ProfileView}/>
-            <PrivateRoute path="/rankings" component={RankingsView}/>
-            <PrivateRoute path="/recommendations" component={RecommendationsView}/>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <PrivateRoute path="/" component={Home}/>
-          </Switch>
-        </Container>
-      </Router>
+      <PodcastState>
+        <Router>
+          <Header />
+          <Container fluid>
+            <Switch>
+              <PrivateRoute path="/search" component={SearchResultsView}/>
+              <PrivateRoute path="/podcast" component={PodcastView}/>
+              <PrivateRoute path="/profile" component={ProfileView}/>
+              <PrivateRoute path="/rankings" component={RankingsView}/>
+              <PrivateRoute path="/recommendations" component={RecommendationsView}/>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <PrivateRoute path="/" component={Home}/>
+            </Switch>
+          </Container>
+        </Router>
+      </PodcastState>
     </AuthState>
     </>
   );
